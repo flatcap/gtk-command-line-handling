@@ -1,21 +1,19 @@
 #ifndef _WINDOW_H_
 #define _WINDOW_H_
 
+#include <iostream>
+
 #include <gtkmm.h>
 
 class Window : public Gtk::ApplicationWindow
 {
 public:
-	//We do not take the file as a constructor parameter,
-	//so we can separate window creation and hiding of the window
-	//when loading fails.
-	explicit Window();
+	Window();
 
-	bool load_file (const Glib::RefPtr<Gio::File>& file);
+	bool load_file (const std::string& filename);
 
-private:
-	Gtk::ScrolledWindow m_scrolledwindow;
-	Gtk::TextView m_view;
+protected:
+	Gtk::Box box;
 };
 
 #endif // _WINDOW_H_

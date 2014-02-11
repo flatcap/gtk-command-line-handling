@@ -10,8 +10,18 @@ public:
 
 	virtual void on_error (Glib::OptionContext& context, Glib::OptionGroup& group);
 
-	bool m_arg_foo;
-	std::string m_arg_goo;
+	bool app      = false;
+	bool list     = false;
+	bool dot      = false;
+	bool separate = false;
+
+	std::vector<std::string> config;
+	std::vector<std::string> theme;
+
+	int x = -1;	// Window coordinates
+	int y = -1;
+	int w = -1;	// Window size
+	int h = -1;
 };
 
 #endif // _OPTIONGROUP_H_

@@ -4,41 +4,17 @@
 
 Window::Window()
 {
-	set_title ("Gtk::Application example");
-
-	add (m_scrolledwindow);
-	m_scrolledwindow.add (m_view);
+	add (box);
 }
 
-bool Window::load_file (const Glib::RefPtr<Gio::File>& file)
+bool Window::load_file (const std::string& filename)
 {
-	if (!file)
+	if (filename.empty())
 		return false;
 
-	try {
-		char* contents = 0;
-		gsize length = 0;
+	Gtk::Label* l = Gtk::manage (new Gtk::Label (filename));
 
-		if (file->load_contents (contents, length)) {
-			if (contents && length) {
-				const Glib::ustring text (contents);
-				Glib::RefPtr<Gtk::TextBuffer> buffer = m_view.get_buffer();
-				buffer->set_text (text);
-			}
-			g_free (contents);
-		}
-	} catch (const Glib::Error& ex) {
-		std::cerr << G_STRFUNC << ": exception while opening file: " << file->get_uri() << std::endl
-			<< "exception: " << ex.what() << std::endl;
-
-		//Tell the application that this window can no longer be useful to
-		//this application, so it can forget about it. The instance might then exit
-		//if this is its last open window.
-		//Note that we must be careful that the caller only calls this method _after_
-		//calling show(), or this would be useless:
-		hide();
-		return false;
-	}
+	box.pack_end (*l, false, false);
 
 	show_all_children();
 	return true;

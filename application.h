@@ -3,6 +3,8 @@
 
 #include <gtkmm.h>
 
+#include "window.h"
+
 class Application : public Gtk::Application
 {
 protected:
@@ -13,11 +15,12 @@ public:
 
 protected:
 	virtual void on_activate();
-	virtual void on_open (const Gio::Application::type_vec_files& files, const Glib::ustring& hint);
 	virtual int on_command_line (const Glib::RefPtr<Gio::ApplicationCommandLine>& command_line);
 
 private:
-	void create_window (const Glib::RefPtr<Gio::File>& file = Glib::RefPtr<Gio::File>());
+	Window* window = nullptr;
+
+	void create_window (void);
 
 	void on_window_hide (Gtk::Window* window);
 };
