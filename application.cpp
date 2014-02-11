@@ -1,31 +1,31 @@
 #include <iostream>
 
-#include "exampleapplication.h"
-#include "examplewindow.h"
-#include "exampleoptiongroup.h"
+#include "application.h"
+#include "window.h"
+#include "optiongroup.h"
 
-ExampleApplication::ExampleApplication() :
+Application::Application() :
 	Gtk::Application ("org.gtkmm.examples.application",
 	Gio::ApplicationFlags (Gio::APPLICATION_HANDLES_OPEN | Gio::APPLICATION_HANDLES_COMMAND_LINE))
 {
 	Glib::set_application_name ("Gtk::Application Example");
 }
 
-Glib::RefPtr<ExampleApplication> ExampleApplication::create()
+Glib::RefPtr<Application> Application::create()
 {
-	return Glib::RefPtr<ExampleApplication> (new ExampleApplication());
+	return Glib::RefPtr<Application> (new Application());
 }
 
-void ExampleApplication::create_window (const Glib::RefPtr<Gio::File>& file)
+void Application::create_window (const Glib::RefPtr<Gio::File>& file)
 {
-	ExampleWindow* window = new ExampleWindow();
+	Window* window = new Window();
 
 	//Make sure that the application runs for as long this window is still open:
 	add_window (*window);
 
 	//Delete the window when it is hidden.
 	//That's enough for this simple example.
-	window->signal_hide().connect (sigc::bind<Gtk::Window*> (sigc::mem_fun (*this, &ExampleApplication::on_window_hide), window));
+	window->signal_hide().connect (sigc::bind<Gtk::Window*> (sigc::mem_fun (*this, &Application::on_window_hide), window));
 
 	window->show();
 
@@ -40,12 +40,12 @@ void ExampleApplication::create_window (const Glib::RefPtr<Gio::File>& file)
 		std::cerr << "This file could not be loaded: " << file->get_path() << std::endl;
 }
 
-void ExampleApplication::on_window_hide (Gtk::Window* window)
+void Application::on_window_hide (Gtk::Window* window)
 {
 	delete window;
 }
 
-void ExampleApplication::on_activate()
+void Application::on_activate()
 {
 	//std::cout << "debug1: " << G_STRFUNC << std::endl;
 	// The application has been started, so let's show a window.
@@ -54,7 +54,7 @@ void ExampleApplication::on_activate()
 	create_window();
 }
 
-void ExampleApplication::on_open (const Gio::Application::type_vec_files& files, const Glib::ustring& hint)
+void Application::on_open (const Gio::Application::type_vec_files& files, const Glib::ustring& hint)
 {
 	// The application has been asked to open some files,
 	// so let's open a new window for each one.
@@ -72,17 +72,19 @@ void ExampleApplication::on_open (const Gio::Application::type_vec_files& files,
 	Gtk::Application::on_open (files, hint);
 }
 
-int ExampleApplication::on_command_line (const Glib::RefPtr<Gio::ApplicationCommandLine>& command_line)
+int Application::on_command_line (const Glib::RefPtr<Gio::ApplicationCommandLine>& command_line)
 {
 	//Parse command-line arguments that were passed either to the main (first) instance
 	//or to subsequent instances.
 	//Note that this parsing is happening in the main (not remote) instance.
 	int argc = 0;
-	char** argv =	command_line->get_arguments (argc);
+	char** argv = command_line->get_arguments (argc);
 
 	Glib::OptionContext context;
-	ExampleOptionGroup group;
+	OptionGroup group;
 	context.set_main_group (group);
+	context.set_summary ("My summary text");
+	context.set_description ("My descriptive text");
 
 	try {
 		context.parse (argc, argv);

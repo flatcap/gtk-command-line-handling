@@ -1,8 +1,8 @@
 #include <iostream>
 
-#include "exampleoptiongroup.h"
+#include "optiongroup.h"
 
-ExampleOptionGroup::ExampleOptionGroup() :
+OptionGroup::OptionGroup() :
 	Glib::OptionGroup ("example_group", "description of example group", "help description of example group"),
 	m_arg_foo (0)
 {
@@ -21,7 +21,7 @@ ExampleOptionGroup::ExampleOptionGroup() :
 	add_entry_filename (entry2, m_arg_goo);
 }
 
-void ExampleOptionGroup::on_error (Glib::OptionContext& /* context */, Glib::OptionGroup& /* group */)
+void OptionGroup::on_error (Glib::OptionContext& /* context */, Glib::OptionGroup& /* group */)
 {
 	std::cout << "on_error called" << std::endl;
 }

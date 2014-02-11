@@ -1,12 +1,12 @@
 #include <gtkmm.h>
 #include <iostream>
 
-#include "exampleapplication.h"
+#include "application.h"
 
 int
 main (int argc, char *argv[])
 {
-	Glib::RefPtr<ExampleApplication> application = ExampleApplication::create();
+	Glib::RefPtr<Application> application = Application::create();
 
 	// Start the application, showing the initial window,
 	// and opening extra windows for any files that it is asked to open,

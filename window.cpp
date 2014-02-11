@@ -1,8 +1,8 @@
 #include <iostream>
 
-#include "examplewindow.h"
+#include "window.h"
 
-ExampleWindow::ExampleWindow()
+Window::Window()
 {
 	set_title ("Gtk::Application example");
 
@@ -10,7 +10,7 @@ ExampleWindow::ExampleWindow()
 	m_scrolledwindow.add (m_view);
 }
 
-bool ExampleWindow::load_file (const Glib::RefPtr<Gio::File>& file)
+bool Window::load_file (const Glib::RefPtr<Gio::File>& file)
 {
 	if (!file)
 		return false;
@@ -28,8 +28,8 @@ bool ExampleWindow::load_file (const Glib::RefPtr<Gio::File>& file)
 			g_free (contents);
 		}
 	} catch (const Glib::Error& ex) {
-		std::cerr << G_STRFUNC << ": exception while opening file: " << file->get_uri() << std::endl <<
-			"  exception: " << ex.what() << std::endl;
+		std::cerr << G_STRFUNC << ": exception while opening file: " << file->get_uri() << std::endl
+			<< "exception: " << ex.what() << std::endl;
 
 		//Tell the application that this window can no longer be useful to
 		//this application, so it can forget about it. The instance might then exit

@@ -1,15 +1,15 @@
-#ifndef _EXAMPLEAPPLICATION_H_
-#define _EXAMPLEAPPLICATION_H_
+#ifndef _APPLICATION_H_
+#define _APPLICATION_H_
 
 #include <gtkmm.h>
 
-class ExampleApplication : public Gtk::Application
+class Application : public Gtk::Application
 {
 protected:
-	ExampleApplication();
+	Application();
 
 public:
-	static Glib::RefPtr<ExampleApplication> create();
+	static Glib::RefPtr<Application> create();
 
 protected:
 	virtual void on_activate();
@@ -22,5 +22,5 @@ private:
 	void on_window_hide (Gtk::Window* window);
 };
 
-#endif // _EXAMPLEAPPLICATION_H_
+#endif // _APPLICATION_H_
 
