@@ -1,9 +1,14 @@
 #include <iostream>
+#include <string>
+
+#include <gtkmm/box.h>
+#include <gtkmm/label.h>
 
 #include "window.h"
 
 Window::Window()
 {
+	box.set_orientation (Gtk::ORIENTATION_VERTICAL);
 	add (box);
 }
 

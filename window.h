@@ -1,9 +1,10 @@
 #ifndef _WINDOW_H_
 #define _WINDOW_H_
 
-#include <iostream>
+#include <string>
 
-#include <gtkmm.h>
+#include <gtkmm/applicationwindow.h>
+#include <gtkmm/box.h>
 
 class Window : public Gtk::ApplicationWindow
 {

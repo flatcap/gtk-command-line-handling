@@ -1,4 +1,4 @@
-#include <iostream>
+#include <glibmm/optionentry.h>
 
 #include "optiongroup.h"
 
@@ -64,10 +64,5 @@ OptionGroup::OptionGroup() :
 	entry10.set_long_name ("height");
 	entry10.set_description ("Height of the main window (app only)");
 	add_entry (entry10, h);
-}
-
-void OptionGroup::on_error (Glib::OptionContext& /* context */, Glib::OptionGroup& /* group */)
-{
-	std::cout << "on_error called" << std::endl;
 }
 

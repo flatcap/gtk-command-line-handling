@@ -1,7 +1,8 @@
 #ifndef _APPLICATION_H_
 #define _APPLICATION_H_
 
-#include <gtkmm.h>
+#include <gtkmm/application.h>
+#include <gtkmm/window.h>
 
 #include "window.h"
 

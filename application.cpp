@@ -1,5 +1,8 @@
 #include <iostream>
 
+#include <glibmm/miscutils.h>
+#include <glibmm/optioncontext.h>
+
 #include "application.h"
 #include "window.h"
 #include "optiongroup.h"
