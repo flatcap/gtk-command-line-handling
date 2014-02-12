@@ -26,10 +26,15 @@ void Application::create_window (void)
 		add_window (*window);
 
 		window->signal_hide().connect (sigc::bind<Gtk::Window*> (sigc::mem_fun (*this, &Application::on_window_hide), window));
-		window->show();
 	}
+}
 
-	window->present();
+void Application::show_window (void)
+{
+	if (window) {
+		window->show();
+		window->present();
+	}
 }
 
 void Application::on_window_hide (Gtk::Window* window)
@@ -68,12 +73,13 @@ int Application::on_command_line (const Glib::RefPtr<Gio::ApplicationCommandLine
 	std::cout << "\tdot        = " << group.dot        << std::endl;
 	std::cout << "\tseparate   = " << group.separate   << std::endl;
 	std::cout << "\tproperties = " << group.properties << std::endl;
+	std::cout << "\tquit       = " << group.quit       << std::endl;
 	std::cout << "\tx          = " << group.x          << std::endl;
 	std::cout << "\ty          = " << group.y          << std::endl;
 	std::cout << "\tw          = " << group.w          << std::endl;
 	std::cout << "\th          = " << group.h          << std::endl;
 
-	if (!group.app && !group.list && !group.properties && !group.dot) {
+	if (!group.app && !group.list && !group.properties && !group.dot && !group.quit) {
 		group.app = true;
 	}
 
@@ -91,6 +97,12 @@ int Application::on_command_line (const Glib::RefPtr<Gio::ApplicationCommandLine
 	}
 
 	bool running = !!window;
+
+	if (running && group.quit) {
+		delete window;
+		window = nullptr;
+		running = false;
+	}
 
 	if (group.app) {
 		create_window();
@@ -147,10 +159,7 @@ int Application::on_command_line (const Glib::RefPtr<Gio::ApplicationCommandLine
 		}
 	}
 
-	if (running) {
-		std::cout << "we're already active" << std::endl;
-		create_window();
-	}
+	show_window();
 
 	return EXIT_SUCCESS;
 }

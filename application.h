@@ -21,6 +21,7 @@ private:
 	Window* window = nullptr;
 
 	void create_window (void);
+	void show_window (void);
 
 	void on_window_hide (Gtk::Window* window);
 };
