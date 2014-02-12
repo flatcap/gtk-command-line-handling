@@ -11,10 +11,11 @@ class OptionGroup : public Glib::OptionGroup
 public:
 	OptionGroup();
 
-	bool app      = false;
-	bool list     = false;
-	bool dot      = false;
-	bool separate = false;
+	bool app        = false;
+	bool list       = false;
+	bool dot        = false;
+	bool separate   = false;
+	bool properties = false;
 
 	int x = -1;	// Window coordinates
 	int y = -1;

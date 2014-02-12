@@ -8,10 +8,9 @@
 #include "optiongroup.h"
 
 Application::Application() :
-	Gtk::Application ("org.gtkmm.examples.application",
-	Gio::ApplicationFlags (Gio::APPLICATION_HANDLES_COMMAND_LINE))
+	Gtk::Application ("org.gtkmm.examples.application", Gio::ApplicationFlags (Gio::APPLICATION_HANDLES_COMMAND_LINE))
 {
-	Glib::set_application_name ("Gtk::Application Example");
+	Glib::set_application_name ("command line test");
 }
 
 Glib::RefPtr<Application> Application::create()
@@ -21,7 +20,6 @@ Glib::RefPtr<Application> Application::create()
 
 void Application::create_window (void)
 {
-	std::cout << __PRETTY_FUNCTION__ << std::endl;
 	if (!window) {
 		window = new Window();
 
@@ -37,17 +35,11 @@ void Application::create_window (void)
 void Application::on_window_hide (Gtk::Window* window)
 {
 	delete window;
-}
-
-void Application::on_activate()
-{
-	std::cout << __PRETTY_FUNCTION__ << std::endl;
-	create_window();
+	window = nullptr;
 }
 
 int Application::on_command_line (const Glib::RefPtr<Gio::ApplicationCommandLine>& command_line)
 {
-	std::cout << __PRETTY_FUNCTION__ << std::endl;
 	int argc = 0;
 	char** argv = command_line->get_arguments (argc);
 
@@ -71,45 +63,32 @@ int Application::on_command_line (const Glib::RefPtr<Gio::ApplicationCommandLine
 	}
 
 	std::cout << "values: " << std::endl;
-	std::cout << "\tapp      = " << group.app      << std::endl;
-	std::cout << "\tlist     = " << group.list     << std::endl;
-	std::cout << "\tdot      = " << group.dot      << std::endl;
-	std::cout << "\tseparate = " << group.separate << std::endl;
-	std::cout << "\tx        = " << group.x        << std::endl;
-	std::cout << "\ty        = " << group.y        << std::endl;
-	std::cout << "\tw        = " << group.w        << std::endl;
-	std::cout << "\th        = " << group.h        << std::endl;
+	std::cout << "\tapp        = " << group.app        << std::endl;
+	std::cout << "\tlist       = " << group.list       << std::endl;
+	std::cout << "\tdot        = " << group.dot        << std::endl;
+	std::cout << "\tseparate   = " << group.separate   << std::endl;
+	std::cout << "\tproperties = " << group.properties << std::endl;
+	std::cout << "\tx          = " << group.x          << std::endl;
+	std::cout << "\ty          = " << group.y          << std::endl;
+	std::cout << "\tw          = " << group.w          << std::endl;
+	std::cout << "\th          = " << group.h          << std::endl;
 
-	if (group.config.size()) {
-		std::cout << "config:" << std::endl;
-		for (auto c : group.config) {
-			std::cout << '\t' << c << std::endl;
-		}
-	}
-
-	if (group.theme.size()) {
-		std::cout << "theme:" << std::endl;
-		for (auto t : group.theme) {
-			std::cout << '\t' << t << std::endl;
-		}
-	}
-
-	if (disks.size()) {
-		std::cout << "disks:" << std::endl;
-		for (auto d : disks) {
-			std::cout << '\t' << d << std::endl;
-		}
-	}
-
-	if (!group.app && !group.list && !group.dot) {
+	if (!group.app && !group.list && !group.properties && !group.dot) {
 		group.app = true;
 	}
+
+	std::cout << "validate options" << std::endl;
 
 	if (group.separate && !group.dot) {
 		std::cout << "separate without dot" << std::endl;
 	}
 
-	std::cout << "validate options" << std::endl;
+	if (!group.app) {
+		if (group.theme.size())
+			std::cout << "theme without app" << std::endl;
+		if ((group.x != -1) || (group.y != -1) || (group.w != -1) || (group.h != -1))
+			std::cout << "coords without app" << std::endl;
+	}
 
 	if (window) {
 		std::cout << "we're already active" << std::endl;
@@ -117,10 +96,54 @@ int Application::on_command_line (const Glib::RefPtr<Gio::ApplicationCommandLine
 		return EXIT_SUCCESS;
 	}
 
-	std::cout << "scan disks" << std::endl;
-
 	if (group.app) {
 		create_window();
+
+		if (group.config.size()) {
+			std::cout << "config:" << std::endl;
+			for (auto c : group.config) {
+				std::cout << '\t' << c << std::endl;
+				window->load_config (c);
+			}
+		}
+
+		if (group.theme.size()) {
+			std::cout << "theme:" << std::endl;
+			for (auto t : group.theme) {
+				std::cout << '\t' << t << std::endl;
+				window->load_theme (t);
+			}
+		}
+	}
+
+	if (disks.size()) {
+		std::cout << "scan only: ";
+		for (auto d : disks) {
+			std::cout << "\"" << d << "\" ";
+			if (window) {
+				window->load_disk (d);
+			}
+		}
+		std::cout << std::endl;
+
+	} else {
+		std::cout << "scan all disks" << std::endl;
+	}
+
+	if (group.list) {
+		std::cout << "list objects" << std::endl;
+	}
+
+	if (group.properties) {
+		std::cout << "list properties" << std::endl;
+	}
+
+	if (group.dot) {
+		if (group.separate) {
+			std::cout << "dot (separate)" << std::endl;
+		} else {
+			std::cout << "dot (single)" << std::endl;
+		}
 	}
 
 	return EXIT_SUCCESS;

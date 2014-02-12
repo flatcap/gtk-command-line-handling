@@ -12,16 +12,28 @@ Window::Window()
 	add (box);
 }
 
-bool Window::load_file (const std::string& filename)
+void Window::display_info (const char* key, const std::string& value)
 {
-	if (filename.empty())
-		return false;
+	std::string k (key);
+	Gtk::Label* l = Gtk::manage (new Gtk::Label (k + ": " + value));
 
-	Gtk::Label* l = Gtk::manage (new Gtk::Label (filename));
-
-	box.pack_end (*l, false, false);
+	box.pack_start (*l, false, false);
 
 	show_all_children();
-	return true;
+}
+
+void Window::load_config (const std::string& filename)
+{
+	display_info ("config", filename);
+}
+
+void Window::load_theme (const std::string& filename)
+{
+	display_info ("theme", filename);
+}
+
+void Window::load_disk (const std::string& filename)
+{
+	display_info ("disk", filename);
 }
 

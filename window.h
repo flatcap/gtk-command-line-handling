@@ -11,10 +11,14 @@ class Window : public Gtk::ApplicationWindow
 public:
 	Window();
 
-	bool load_file (const std::string& filename);
+	void load_config (const std::string& filename);
+	void load_theme  (const std::string& filename);
+	void load_disk   (const std::string& filename);
 
 protected:
 	Gtk::Box box;
+
+	void display_info (const char* key, const std::string& value);
 };
 
 #endif // _WINDOW_H_

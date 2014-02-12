@@ -15,7 +15,6 @@ public:
 	static Glib::RefPtr<Application> create();
 
 protected:
-	virtual void on_activate();
 	virtual int on_command_line (const Glib::RefPtr<Gio::ApplicationCommandLine>& command_line);
 
 private:
