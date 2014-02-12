@@ -37,3 +37,15 @@ void Window::load_disk (const std::string& filename)
 	display_info ("disk", filename);
 }
 
+void Window::set_geometry (int x, int y, int w, int h)
+{
+	x = std::max (x, 0);
+	y = std::max (y, 0);
+
+	w = std::max (w, 100);
+	h = std::max (h, 100);
+
+	move (x, y);
+	resize (w, h);
+}
+

@@ -15,6 +15,8 @@ public:
 	void load_theme  (const std::string& filename);
 	void load_disk   (const std::string& filename);
 
+	void set_geometry (int x, int y, int w, int h);
+
 protected:
 	Gtk::Box box;
 

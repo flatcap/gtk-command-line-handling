@@ -90,11 +90,7 @@ int Application::on_command_line (const Glib::RefPtr<Gio::ApplicationCommandLine
 			std::cout << "coords without app" << std::endl;
 	}
 
-	if (window) {
-		std::cout << "we're already active" << std::endl;
-		create_window();
-		return EXIT_SUCCESS;
-	}
+	bool running = !!window;
 
 	if (group.app) {
 		create_window();
@@ -114,6 +110,10 @@ int Application::on_command_line (const Glib::RefPtr<Gio::ApplicationCommandLine
 				window->load_theme (t);
 			}
 		}
+
+		if ((group.x > -1) || (group.y > -1) || (group.w > -1) || (group.h > -1)) {
+			window->set_geometry (group.x, group.y, group.w, group.h);
+		}
 	}
 
 	if (disks.size()) {
@@ -125,9 +125,10 @@ int Application::on_command_line (const Glib::RefPtr<Gio::ApplicationCommandLine
 			}
 		}
 		std::cout << std::endl;
-
 	} else {
-		std::cout << "scan all disks" << std::endl;
+		if (!running) {
+			std::cout << "scan all disks" << std::endl;
+		}
 	}
 
 	if (group.list) {
@@ -144,6 +145,11 @@ int Application::on_command_line (const Glib::RefPtr<Gio::ApplicationCommandLine
 		} else {
 			std::cout << "dot (single)" << std::endl;
 		}
+	}
+
+	if (running) {
+		std::cout << "we're already active" << std::endl;
+		create_window();
 	}
 
 	return EXIT_SUCCESS;
